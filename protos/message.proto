@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package protos;
+
+message handShake {
+    
+}
+
+message annouceIP {
+  
+}
+
+message exchange {
+
+}
