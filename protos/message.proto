@@ -2,14 +2,7 @@ syntax = "proto3";
 
 package protos;
 
-message handShake {
-    
-}
-
-message annouceIP {
-  
-}
-
-message exchange {
-
+message HandShake {
+   string text = 1;
+   bool done = 2;
 }
