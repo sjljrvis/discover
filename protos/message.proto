@@ -3,6 +3,6 @@ syntax = "proto3";
 package protos;
 
 message HandShake {
-   string text = 1;
-   bool done = 2;
+   string ipAddr = 1;
+   string type = 2;
 }

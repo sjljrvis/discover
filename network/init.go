@@ -6,32 +6,41 @@ import (
 	"strconv"
 )
 
+// Peer Struct
+type Peer struct {
+	conn net.Conn
+	msg  chan []byte
+}
+
 var (
-	peerChanel  = make(chan net.Conn)
+	peerChannel = make(chan net.Conn)
+	register    = make(chan *Peer)
 	activePeers = make(map[net.Conn]bool)
+	msgChannel  = make(chan []byte)
 	activeIPs   = []string{}
 )
+
+func connector(listener net.Listener) {
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			log.Fatal(err)
+		}
+		peerChannel <- conn
+	}
+}
 
 // Init connections and discovery here
 func Init(port int, peers []string) {
 
-	selfAddress := "127.0.0.1:" + strconv.Itoa(port)
 	listener, err := net.Listen("tcp", ":"+strconv.Itoa(port))
-	defer listener.Close()
 
+	defer listener.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	go func() {
-		for {
-			conn, err := listener.Accept()
-			if err != nil {
-				log.Fatal(err)
-			}
-			peerChanel <- conn
-		}
-	}()
+	go connector(listener)
 
 	if len(peers) > 0 {
 		go func() {
@@ -41,10 +50,10 @@ func Init(port int, peers []string) {
 					if err != nil {
 						log.Println("Peer disconnected ->", clientConn.RemoteAddr())
 						clientConn.Close()
+						activePeers[clientConn] = false
 						return
 					}
-					_, err = clientConn.Write([]byte(selfAddress))
-					go read(clientConn, selfAddress, &activeIPs, &activePeers)
+					peerChannel <- clientConn
 				}
 			}
 		}()
@@ -52,10 +61,12 @@ func Init(port int, peers []string) {
 
 	for {
 		select {
-		case conn := <-peerChanel:
+		case conn := <-peerChannel:
 			activePeers[conn] = true
-			go read(conn, selfAddress, &activeIPs, &activePeers)
-			go write(conn, selfAddress)
+			peer := &Peer{conn: conn}
+			register <- peer
+			go peer.read()
+			go peer.write()
 		}
 	}
 

@@ -3,17 +3,9 @@ package main
 import (
 	"flag"
 	"log"
-	"net"
 	"strings"
 
 	"github.com/sjljrvis/peerfind/network"
-)
-
-// Test is export
-var (
-	peerChanel  = make(chan net.Conn)
-	activePeers = make(map[net.Conn]bool)
-	activeIPs   = []string{}
 )
 
 func init() {
