@@ -18,64 +18,64 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type HandShake struct {
-	IpAddr               string   `protobuf:"bytes,1,opt,name=ipAddr,proto3" json:"ipAddr,omitempty"`
-	Type                 string   `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+type Arc struct {
+	Type                 string   `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	Data                 []byte   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *HandShake) Reset()         { *m = HandShake{} }
-func (m *HandShake) String() string { return proto.CompactTextString(m) }
-func (*HandShake) ProtoMessage()    {}
-func (*HandShake) Descriptor() ([]byte, []int) {
-	return fileDescriptor_message_8ecdf8495e076e4d, []int{0}
+func (m *Arc) Reset()         { *m = Arc{} }
+func (m *Arc) String() string { return proto.CompactTextString(m) }
+func (*Arc) ProtoMessage()    {}
+func (*Arc) Descriptor() ([]byte, []int) {
+	return fileDescriptor_message_a4feaa465ca2e152, []int{0}
 }
-func (m *HandShake) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_HandShake.Unmarshal(m, b)
+func (m *Arc) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Arc.Unmarshal(m, b)
 }
-func (m *HandShake) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_HandShake.Marshal(b, m, deterministic)
+func (m *Arc) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Arc.Marshal(b, m, deterministic)
 }
-func (dst *HandShake) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HandShake.Merge(dst, src)
+func (dst *Arc) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Arc.Merge(dst, src)
 }
-func (m *HandShake) XXX_Size() int {
-	return xxx_messageInfo_HandShake.Size(m)
+func (m *Arc) XXX_Size() int {
+	return xxx_messageInfo_Arc.Size(m)
 }
-func (m *HandShake) XXX_DiscardUnknown() {
-	xxx_messageInfo_HandShake.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_HandShake proto.InternalMessageInfo
-
-func (m *HandShake) GetIpAddr() string {
-	if m != nil {
-		return m.IpAddr
-	}
-	return ""
+func (m *Arc) XXX_DiscardUnknown() {
+	xxx_messageInfo_Arc.DiscardUnknown(m)
 }
 
-func (m *HandShake) GetType() string {
+var xxx_messageInfo_Arc proto.InternalMessageInfo
+
+func (m *Arc) GetType() string {
 	if m != nil {
 		return m.Type
 	}
 	return ""
 }
 
-func init() {
-	proto.RegisterType((*HandShake)(nil), "protos.HandShake")
+func (m *Arc) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
 }
 
-func init() { proto.RegisterFile("message.proto", fileDescriptor_message_8ecdf8495e076e4d) }
+func init() {
+	proto.RegisterType((*Arc)(nil), "protos.Arc")
+}
 
-var fileDescriptor_message_8ecdf8495e076e4d = []byte{
-	// 93 bytes of a gzipped FileDescriptorProto
+func init() { proto.RegisterFile("message.proto", fileDescriptor_message_a4feaa465ca2e152) }
+
+var fileDescriptor_message_a4feaa465ca2e152 = []byte{
+	// 86 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xcd, 0x4d, 0x2d, 0x2e,
-	0x4e, 0x4c, 0x4f, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x03, 0x53, 0xc5, 0x4a, 0xe6,
-	0x5c, 0x9c, 0x1e, 0x89, 0x79, 0x29, 0xc1, 0x19, 0x89, 0xd9, 0xa9, 0x42, 0x62, 0x5c, 0x6c, 0x99,
-	0x05, 0x8e, 0x29, 0x29, 0x45, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x50, 0x9e, 0x90, 0x10,
-	0x17, 0x4b, 0x49, 0x65, 0x41, 0xaa, 0x04, 0x13, 0x58, 0x14, 0xcc, 0x4e, 0x82, 0x18, 0x60, 0x0c,
-	0x08, 0x00, 0x00, 0xff, 0xff, 0x77, 0x7c, 0xc0, 0xcb, 0x58, 0x00, 0x00, 0x00,
+	0x4e, 0x4c, 0x4f, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x03, 0x53, 0xc5, 0x4a, 0xba,
+	0x5c, 0xcc, 0x8e, 0x45, 0xc9, 0x42, 0x42, 0x5c, 0x2c, 0x25, 0x95, 0x05, 0xa9, 0x12, 0x8c, 0x0a,
+	0x8c, 0x1a, 0x9c, 0x41, 0x60, 0x36, 0x48, 0x2c, 0x25, 0xb1, 0x24, 0x51, 0x82, 0x49, 0x81, 0x51,
+	0x83, 0x27, 0x08, 0xcc, 0x4e, 0x82, 0x68, 0x33, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x10, 0x8d,
+	0xf0, 0x0b, 0x4e, 0x00, 0x00, 0x00,
 }

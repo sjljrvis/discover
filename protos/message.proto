@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protos;
 
-message HandShake {
-   string ipAddr = 1;
-   string type = 2;
+message  Arc {
+   string type = 1;
+   bytes data = 2;
 }

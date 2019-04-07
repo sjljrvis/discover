@@ -7,17 +7,25 @@ import (
 	protos "github.com/sjljrvis/peerfind/protos"
 )
 
-func (peer *Peer) write() {
+func (peer *Peer) write(msgChannel chan []byte) {
+	for {
+		msg := <-msgChannel
+		_msg := &protos.Arc{}
+		err := proto.Unmarshal(msg, _msg)
+		if err != nil {
+			log.Fatal("unmarshaling error: ", err)
+		}
 
-	msg := &protos.HandShake{
-		IpAddr: peer.conn.LocalAddr().String(),
-		Type:   "handshake",
+		switch _msg.GetType() {
+
+		case "handshake":
+			log.Println(" this is handshake")
+			peer.conn.Write(msg)
+
+		default:
+			log.Println("Default message")
+
+		}
 	}
-	data, err := proto.Marshal(msg)
-	if err != nil {
-		log.Println("Marshalling Error", err)
-	}
-	log.Println(data)
-	peer.conn.Write(data)
 
 }

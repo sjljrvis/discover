@@ -1,5 +1,12 @@
 package network
 
+import (
+	"log"
+
+	"github.com/gogo/protobuf/proto"
+	protos "github.com/sjljrvis/peerfind/protos"
+)
+
 // func read(conn net.Conn, selfAddress string, activeIPs *[]string, activePeers *map[net.Conn]bool) {
 // 	defer conn.Close()
 // 	data := make([]byte, 1024)
@@ -24,6 +31,21 @@ package network
 // 	}
 // }
 
-func (peer *Peer) read() {
+func (peer *Peer) read(msgChannel chan []byte) {
 	defer peer.conn.Close()
+	data := make([]byte, 1024)
+	for {
+		len, err := peer.conn.Read(data)
+		if err != nil {
+			log.Println("Peer disconnected ->", peer.conn.RemoteAddr())
+			peer.conn.Close()
+			return
+		}
+		msg := &protos.Arc{}
+		err = proto.Unmarshal(data[0:len], msg)
+		if err != nil {
+			log.Fatal("unmarshaling error: ", err)
+		}
+		log.Println(">>>>>>", msg.GetType(), msg.GetData())
+	}
 }

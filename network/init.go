@@ -4,6 +4,9 @@ import (
 	"log"
 	"net"
 	"strconv"
+
+	"github.com/gogo/protobuf/proto"
+	protos "github.com/sjljrvis/peerfind/protos"
 )
 
 // Peer Struct
@@ -14,7 +17,6 @@ type Peer struct {
 
 var (
 	peerChannel = make(chan net.Conn)
-	register    = make(chan *Peer)
 	activePeers = make(map[net.Conn]bool)
 	msgChannel  = make(chan []byte)
 	activeIPs   = []string{}
@@ -28,6 +30,18 @@ func connector(listener net.Listener) {
 		}
 		peerChannel <- conn
 	}
+}
+
+func initHandshake() []byte {
+	msg := &protos.Arc{
+		Type: "handshake",
+		Data: []byte("0.0.0.0"),
+	}
+	data, err := proto.Marshal(msg)
+	if err != nil {
+		log.Fatal("marshaling error: ", err)
+	}
+	return data
 }
 
 // Init connections and discovery here
@@ -64,9 +78,10 @@ func Init(port int, peers []string) {
 		case conn := <-peerChannel:
 			activePeers[conn] = true
 			peer := &Peer{conn: conn}
-			register <- peer
-			go peer.read()
-			go peer.write()
+			go peer.read(msgChannel)
+			go peer.write(msgChannel)
+			handshake := initHandshake()
+			msgChannel <- handshake
 		}
 	}
 
